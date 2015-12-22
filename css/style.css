@@ -1,0 +1,55 @@
+* {
+  box-sizing:border-box;
+}
+body {
+  background-color: #ccc;
+}
+
+/* Grid CSS */
+h4 {
+  margin-top: 25px;
+}
+
+li {
+  cursor: pointer;
+  color: blue;
+}
+
+.row {
+  margin-bottom: 20px;
+}
+
+.row .row {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+[class*="col-"] {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: #eee;
+  background-color: rgba(86,61,124,.15);
+  border: 1px solid #ddd;
+  border: 1px solid rgba(86,61,124,.2);
+}
+
+hr {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+/* End grid css */
+
+#map-canvas { 
+    position: absolute; 
+    height: 80%; 
+    width:80%; 
+    top:0;
+    right:0;
+    margin: 0; 
+    padding: 0;    
+}
+
+#searchBar {
+  margin-bottom: 20px;
+}
+

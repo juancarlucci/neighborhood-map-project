@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/style.css">
+    <script> function googlesuccess() {}; </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLtnK9Iy7FBcX22ypzwlFbY0hh8x0RJEk&callback=googlesuccess" async defer>
+    </script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <style>
+      html {height: 100%}
+      body {height: 100%;}
+      #map-container { height:100%}
+      #map-size {
+            height:500px;
+            padding:20px;
+            border:2px solid #ccc;
+            margin-bottom: 20px;
+            background-color: #fff
+          }
+      @media all and (max-width: 991px) {
+        #map-size {height:650px}
+      }
+    </style>
+</head>
+
+<body>
+<div class="container">
+  <div class="page-header">
+        <h2>Neighborhood Map Chicago</h2>
+  </div>
+
+  <!-- Implementing search functionality -->
+  <input id="searchBar" placeholder="Search" type="search" data-bind="textInput: query">
+
+  <div class="row">
+    <div id="map-size" class="col-md-12">
+        <div class="col-xs-4 col-lg-4">
+            <ul data-bind="foreach: search()">
+             <li data-bind="text:name, click: viewModel.listItemClick"></li>
+            </ul>
+        </div>
+        <div id="map-container" class="col-xs-12 col-sm-8 col-lg-8"></div>
+    </div>
+  </div>
+</div>
+  <script type='text/javascript' src='knockout/knockout-3.3.0.js'></script>
+  <script src="js/libs/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+ <script src="js/script.js"></script>
+</body>
+</html>
