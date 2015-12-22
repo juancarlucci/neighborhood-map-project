@@ -1,12 +1,5 @@
-var myPlace = new google.maps.LatLng(41.878114,-87.629798);
-var infowindow = new google.maps.InfoWindow();
-var mapOptions = {
-    center: myPlace,
-    zoom: 6
-};
-var map = new google.maps.Map(document.getElementById("map-container"),
-            mapOptions);
 
+var map;
 var places = ko.observableArray ([
       {
           name: "Six Flags Great America",
@@ -140,5 +133,3 @@ function initialize() {
 
 var viewModel = new ViewModel();
 ko.applyBindings(viewModel);
-google.maps.event.addDomListener(window, 'load', initialize);
-
