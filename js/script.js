@@ -1,3 +1,16 @@
+function app() {
+
+function initMap(){
+var myPlace = new google.maps.LatLng(41.878114,-87.629798);
+         // var infowindow = new google.maps.InfoWindow();
+          var mapOptions = {
+           center: myPlace,
+            zoom: 6
+            };
+          var map = new google.maps.Map(document.getElementById("map-container"),
+            mapOptions);
+
+};
 
 var map;
 var places = ko.observableArray ([
@@ -55,9 +68,13 @@ var places = ko.observableArray ([
     });
   }
 
-  google.maps.event.addListener(map, 'click', function() {
-    infowindow.close();
-  });
+//  google.maps.event.addListener(map, 'click', function() {
+// infowindow.close();
+// });
+  var infowindow = new google.maps.InfoWindow(
+      //  maxWidth: 200,
+   );
+
 
   for (i=0 ; i < places().length; i++) {
     places()[i].pointer =  new Pointer (map, places()[i].name, places()[i].mylat, places()[i].mylong, places()[i].myData);
@@ -97,6 +114,7 @@ var places = ko.observableArray ([
     return self.visibleLocations();
   });
 
+
   self.getWikis = function(heading, infowindow) {
     var thePlace = heading;
     var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + thePlace  +
@@ -104,6 +122,9 @@ var places = ko.observableArray ([
 
     var wikiRequestTimeout = setTimeout(function() {
                             $wikiElem.text("failed to get wikipedia resources"); },8000);
+
+
+
     $.ajax({
       url: wikiUrl,
       dataType: "jsonp",
@@ -117,9 +138,11 @@ var places = ko.observableArray ([
                   heading + '</a>');
 
           clearTimeout(wikiRequestTimeout);
+
         }
     });
   };
+
 
   self.listItemClick = function(item) {
   clickedMarker = item.pointer.marker;
@@ -127,9 +150,17 @@ var places = ko.observableArray ([
   }
 };
 
+
 function initialize() {
 
 }
 
-var viewModel = new ViewModel();
-ko.applyBindings(viewModel);
+function startApp() {
+   initMap();
+   var viewModel = new ViewModel();
+   ko.applyBindings(new ViewModel());
+};
+
+startApp();
+
+};
