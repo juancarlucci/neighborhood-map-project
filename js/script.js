@@ -51,6 +51,7 @@ var places = ko.observableArray ([
       }
 ]);
 
+
  var ViewModel = function() {
   var self=this;
 
@@ -68,8 +69,8 @@ var places = ko.observableArray ([
     });
   }
 
-//  google.maps.event.addListener(map, 'click', function() {
-// infowindow.close();
+// google.maps.event.addListener(map, 'click', function() {
+ //infowindow.close();
 // });
   var infowindow = new google.maps.InfoWindow(
       //  maxWidth: 200,
@@ -149,6 +150,7 @@ var places = ko.observableArray ([
   google.maps.event.trigger(clickedMarker, 'click');
   }
 };
+var viewModel = new ViewModel();
 
 
 function initialize() {

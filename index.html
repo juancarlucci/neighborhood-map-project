@@ -11,8 +11,11 @@
 
 
     <script src="js/script.js"></script>
+    <script> function googlesuccess() {
+      app();
+    } </script>
 
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLtnK9Iy7FBcX22ypzwlFbY0hh8x0RJEk&callback=app">
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLtnK9Iy7FBcX22ypzwlFbY0hh8x0RJEk&callback=googlesuccess">
     </script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <style>
@@ -45,7 +48,7 @@
     <div id="map-size" class="col-md-12">
         <div class="col-xs-4 col-lg-4">
             <ul data-bind="foreach: search()">
-             <li data-bind="text:name, click: viewModel.listItemClick"></li>
+             <li data-bind="text:name, click: $root.listItemClick"></li>
             </ul>
         </div>
         <div id="map-container" class="col-xs-12 col-sm-8 col-lg-8"></div>
