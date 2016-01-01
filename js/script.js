@@ -1,19 +1,22 @@
 function app() {
+  var map;
 
-function initMap(){
-var myPlace = new google.maps.LatLng(41.878114,-87.629798);
+//map initialization function//
+
+  function initMap(){
+  var myPlace = new google.maps.LatLng(41.878114,-87.629798);
          // var infowindow = new google.maps.InfoWindow();
           var mapOptions = {
            center: myPlace,
             zoom: 6
             };
-          var map = new google.maps.Map(document.getElementById("map-container"),
+            map = new google.maps.Map(document.getElementById("map-container"),
             mapOptions);
 
-};
+  }
 
-var map;
-var places = ko.observableArray ([
+
+  var places = ko.observableArray ([
       {
           name: "Six Flags Great America",
           mylat: 42.377254,
@@ -49,12 +52,14 @@ var places = ko.observableArray ([
           myData: '',
           id: "place5"
       }
-]);
+  ]);
 
-
+  // viemodel definition //
  var ViewModel = function() {
   var self=this;
+  var bounds = new google.maps.LatLngBounds();
 
+//markers encapsulation for interaction with google maps//
  var Pointer = function (map, name, mylat, mylong, myData) {
 
     this.name = ko.observable(name);
@@ -67,15 +72,13 @@ var places = ko.observableArray ([
       animation: google.maps.Animation.DROP,
       map:map
     });
-  }
+    //extend bounds to include this location
+    bounds.extend(this.marker.position);
+  }; //close pointer constructor//
 
-// google.maps.event.addListener(map, 'click', function() {
- //infowindow.close();
-// });
-  var infowindow = new google.maps.InfoWindow(
-      //  maxWidth: 200,
-   );
+ var infowindow = new google.maps.InfoWindow();
 
+  // add markers//
 
   for (i=0 ; i < places().length; i++) {
     places()[i].pointer =  new Pointer (map, places()[i].name, places()[i].mylat, places()[i].mylong, places()[i].myData);
@@ -92,43 +95,47 @@ var places = ko.observableArray ([
         setTimeout(function() { pointer.marker.setAnimation(null); }, 750);
       };
     })(places()[i].pointer, content, infowindow, heading));
-  }
+  } // closing marker creation loop//
+
+    map.fitBounds(bounds);
+
+  // Filter and search//
+
   self.locations = ko.observableArray(places());
   self.visibleLocations = ko.observableArray();
   self.query = ko.observable('');
   self.search = ko.computed(function(){
-    self.visibleLocations.removeAll();
-    var filter = self.query().toLowerCase();
+    self.visibleLocations.removeAll();  // clear array of visible locations//
+    var filter = self.query().toLowerCase(); // lowercase search term//
 
+    //loop through each item in self.locations//
     ko.utils.arrayFilter(self.locations(), function(location) {
 
        var searchIndex = location.name.toLowerCase().indexOf(filter);
 
+       //does the location name contain the search term?
+
        if (searchIndex >= 0) {
-        location.pointer.marker.setVisible(true);
-        self.visibleLocations.push(location);
+        location.pointer.marker.setVisible(true); // show the map marker
+        self.visibleLocations.push(location); // add this loaction to visible locations array
        }
       else {
-        location.pointer.marker.setVisible(false);
+        location.pointer.marker.setVisible(false); // hide the map marker
       }
     });
-    return self.visibleLocations();
-  });
+    return self.visibleLocations(); //return visible locations
+  }); // close filter and search
 
 
   self.getWikis = function(heading, infowindow) {
+    //get Wiki articles
     var thePlace = heading;
     var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + thePlace  +
                   '&format=json&callback=wikiCallback';
-
-    var wikiRequestTimeout = setTimeout(function() {
-                            $wikiElem.text("failed to get wikipedia resources"); },8000);
-
-
-
     $.ajax({
       url: wikiUrl,
       dataType: "jsonp",
+      timeout: 8000,
       //jsonp: "callback",
       success: function ( response) {
           var articleStr = response[0];
@@ -137,32 +144,32 @@ var places = ko.observableArray ([
           content = url;
           infowindow.setContent('<h4>' + heading + '</h4>' + '<a href="' + content + '">' + 'Wikipedia Link to ' +
                   heading + '</a>');
-
-          clearTimeout(wikiRequestTimeout);
-
         }
-    });
-  };
+
+    }).fail(function(x, t, m) {
+        if (t==='timeout'){alert("got timeout");
+          } else {
+            alert(t);
+          }
+  });
+
+  }; //end getWikis
 
 
   self.listItemClick = function(item) {
   clickedMarker = item.pointer.marker;
   google.maps.event.trigger(clickedMarker, 'click');
-  }
-};
-var viewModel = new ViewModel();
+  };
+  };//end viewmodel
+  var viewModel;
 
-
-function initialize() {
-
-}
-
-function startApp() {
+  //function to call map initialization and apply bindings
+  function startApp() {
    initMap();
-   var viewModel = new ViewModel();
-   ko.applyBindings(new ViewModel());
-};
+   viewModel = new ViewModel();
+   ko.applyBindings(viewModel);
+    }
 
-startApp();
+  startApp();
 
-};
+  }
